@@ -26,20 +26,14 @@ function buildDeck() {
 
 // const cardValue = 0; //I want to give all the cards in the deck a numueral value to track the math of the game. Also probably not needed....
 
-const hit = function(){
-    //something that allows me to get the next card from the deck.
-};
 
-const stay = function(){
-    //something that ends the player's turn and initiates the dealers turn
-};
 
 
 //shuffles the deck using the Fisher-Yates shuffle https://en.wikipedia.org/wiki/Fisher-Yates_shuffle //
 
 const shuffle = function shuffleDeck(){
-    for(let i = 0; i < 51; i++){
-        let newCardIndex = Math.floor(Math.random() * 51);
+    for(let i = 0; i < 52; i++){
+        let newCardIndex = Math.floor(Math.random() * 52);
         let randomCard = masterDeck[i];
         masterDeck[i] = masterDeck[newCardIndex];
         masterDeck[newCardIndex] = randomCard;
@@ -60,12 +54,65 @@ const deal = function(){
     //This function should begin a new round by wiping the cards/counts from the previous round and dealing a new set of cards to the player and dealer
 };
 
+document.getElementById("deal").addEventListener("click", dealCards)
 
+function dealCards(){
+        if (playerTotal < "1"){
+        faceDown = masterDeck.pop();
+        dealerTotal += faceDown.value;
+        playerCard = masterDeck.pop()
+        playerTotal += playerCard.value;
+        
+        nextDealerCard = masterDeck.pop();
+        dealerTotal += nextDealerCard.value;
+        
+        playerCard = masterDeck.pop()
+        playerTotal += playerCard.value;
+        console.log('player total: ' + playerTotal)
+        console.log('dealer total: ' + dealerTotal)
+        }
+}                    
 
-function beginGame(){
-    faceDown = masterDeck.pop();
-    dealerTotal += faceDown.value;
-    console.log(dealerTotal);
-    console.log(faceDown);
+//This is for my hit button
+document.getElementById("hit").addEventListener("click", hit)
+
+function hit(){
+    if (playerTotal < 21){
+    playerCard = masterDeck.pop()
+    playerTotal += playerCard.value;
+    }   
+    console.log('Player total: '+ playerTotal)
 }
 
+
+//Here is for my stay button
+document.getElementById("stay").addEventListener("click", stay)
+
+function stay(){
+    if (playerTotal < 22){
+    while (dealerTotal < 17){
+        let nextDealerCard = masterDeck.pop();
+        dealerTotal += nextDealerCard.value;
+    }}
+    console.log('Player total: ' + playerTotal)
+    console.log('Dealer total: ' + dealerTotal)
+}
+
+
+//logged out part of the function does not work for some reason....
+
+
+console.log('Dealer total: ' + dealerTotal)
+console.log('Player total: ' + playerTotal)
+console.log(masterDeck)
+
+
+//working notes: need to prevent player from hitting after clicking stay - maybe remove button?
+//need to then add win conditions after stay and the dealer plays out.
+//need an announcment for who wins after the dealer plays their turn.
+//need to boot up next round after player stays and winner is declared. could be with a button or something automated
+//need to run the shuffle function at somepoint. when the game is loaded or upon clicking a "new game" button.
+
+
+//longer term: need to set up my UI/CSS
+//need to have cards visually displayed. Right now everything is run in the background.
