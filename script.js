@@ -1,6 +1,6 @@
 let playerTotal = 0;    
 let dealerTotal = 0;
-
+let canHit = true;
 //This builds the deck.
 
 const suits = ['s', 'c', 'd', 'h'];
@@ -20,7 +20,7 @@ function buildDeck() {
     return deck;
 }
 
-//shuffles the deck using the Fisher-Yates shuffle https://en.wikipedia.org/wiki/Fisher-Yates_shuffle //
+// shuffles the deck using the Fisher-Yates shuffle https://en.wikipedia.org/wiki/Fisher-Yates_shuffle //
 
 const shuffle = function shuffleDeck(){
     for(let i = 0; i < 52; i++){
@@ -41,20 +41,25 @@ function dealCards(){
         
         if (playerTotal < "1"){
 
-        playerCard = masterDeck.pop()
-        playerTotal += playerCard.value;
-        
-        faceDown = masterDeck.pop();
-        dealerTotal += faceDown.value;
-        
-        playerCard = masterDeck.pop()
-        playerTotal += playerCard.value;
 
-        nextDealerCard = masterDeck.pop();
-        dealerTotal += nextDealerCard.value;
+            let cardEl = document.createElement("img");
+            playerCard = masterDeck.pop();
+            playerTotal += playerCard.value;
+            cardEl.src = "card-deck-css/images/" + playerCard.card + ".svg";
+            document.getElementById("player").append(cardEl);
 
-        console.log('player total: ' + playerTotal)
-        console.log('dealer total: ' + dealerTotal)
+
+            faceDown = masterDeck.pop();
+            dealerTotal += faceDown.value;
+        
+            playerCard = masterDeck.pop()
+            playerTotal += playerCard.value;
+
+            nextDealerCard = masterDeck.pop();
+            dealerTotal += nextDealerCard.value;
+
+            console.log('player total: ' + playerTotal)
+            console.log('dealer total: ' + dealerTotal)
         }
 }                    
 
@@ -63,27 +68,33 @@ function dealCards(){
 document.getElementById("hit").addEventListener("click", hit)
 
 function hit(){
+    if (!canHit){
+        return;
+    }
         if (playerTotal < 21){
             playerCard = masterDeck.pop();
             playerTotal += playerCard.value;
-            }
-        
+            
+        } 
     console.log('Player total: '+ playerTotal);
 }
 
-
-//Stay button functions.
+//Stay button functions. Also activates/runs the dealers turn and following win conditions.
 
 document.getElementById("stay").addEventListener("click", stay)
 
 function stay(){
+
+    canHit = false;
     if (playerTotal < 22){
-    while (dealerTotal < 17){
+        while (dealerTotal < 17){
         let nextDealerCard = masterDeck.pop();
         dealerTotal += nextDealerCard.value;
-    }}
+        }
+}
 
     let conclusion = ""
+    
     if (playerTotal > 21){
         conclusion = "Player Busted!";
     }
@@ -106,9 +117,7 @@ function stay(){
     console.log('Dealer total: ' + dealerTotal)
 }
 
-
 //Console logs for testing
-
 
 console.log('Dealer total: ' + dealerTotal)
 console.log('Player total: ' + playerTotal)
@@ -124,5 +133,7 @@ console.log(masterDeck)
 //need to have cards visually displayed. Right now everything is run in the background.
 
 
-
+//display the player total and the dealer total live 
 //need to boot up next round after player stays and winner is declared. could be with a button or something automated
+//flip the hidden card at the right times
+//DRY out the code. Made just a dealToPlayer and dealToDealer function to fire so I'm not repeating the .pops and total updates all over the place.
