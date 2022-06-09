@@ -5,6 +5,7 @@ This is a single deck Blackjack game. The goal of the game is to get a higher to
 ## Technologies Used
 
 This game uses HTML, CSS, and Javascript.
+Wireframe: https://www.figma.com/file/fKcF62iHv4hk0Wrzi9XBkK/Blackjack-Wireframe?node-id=0%3A1
 
 ## Getting Started
 
