@@ -1,7 +1,30 @@
+body {
+    background-color: black;
+    text-align: center;
+}
 
+#dealer img {
+    background-color: rgb(210, 218, 218);
+    margin: 5px;
+}
 
+#player img {
+    background-color: rgb(210, 218, 218);
+    margin: 5px;
+}
 
+h4 {
+    font-size: 40px;
+    color:rgb(228, 214, 23)
+}
 
+h1 {
+    font-size: 60px;
+    color: #00ff0079;
+}
 
-
+#winOrLose {
+    font-size: 75px;
+    color: teal;
+}
 

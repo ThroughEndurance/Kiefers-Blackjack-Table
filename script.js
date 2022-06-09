@@ -1,9 +1,12 @@
+//Setting some variables and begining of game values.
+
 let playerTotal = 0;    
 let dealerTotal = 0;
-let playAllowed = true;
+let playAllowed = false;
 let playerAces = 0;
 let dealerAces = 0;
-//This builds the deck.
+
+//This builds the deck into an array titled masterDeck.
 
 const suits = ['s', 'c', 'd', 'h'];
 const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
@@ -22,7 +25,7 @@ function buildDeck() {
     return deck;
 }
 
-// shuffles the deck using the Fisher-Yates shuffle https://en.wikipedia.org/wiki/Fisher-Yates_shuffle //
+// shuffles the deck using the Fisher-Yates shuffle https://en.wikipedia.org/wiki/Fisher-Yates_shuffle upon loading the window //
 
 const shuffle = function shuffleDeck(){
     for(let i = 0; i < 52; i++){
@@ -35,11 +38,13 @@ const shuffle = function shuffleDeck(){
 
 window.onload = shuffle()
 
-//Deal button functions are below.
+//Deal button functions are below. Each "group" of code deals a card using pop, and then renders the corresponding card to the page, while tracking the player/dealer totals and ace counts.
+//In short, the deal button deals two cards to the player and dealer.
 
 document.getElementById("deal").addEventListener("click", dealCards)
 
 function dealCards(){
+    playAllowed = true;
         
         if (playerTotal < "1"){
 
@@ -81,15 +86,10 @@ function dealCards(){
 
             document.getElementById("dealer-total").innerText = dealerTotal;
             document.getElementById("player-total").innerText = playerTotal;
-
-            console.log('player aces: ' + playerAces)
-            console.log('dealer aces: ' + dealerAces)
-            console.log('player total: ' + playerTotal)
-            console.log('dealer total: ' + dealerTotal)
         }
 }                    
 
-//Hit button functions. Need to add what happens player busts here: end round, player loses, only clickable options should be new round etc.
+//Hit button functions. The player get another card and the playerTotal and playerAces are updated. If player busts stay function runs.
 
 document.getElementById("hit").addEventListener("click", hit)
 
@@ -116,16 +116,14 @@ function hit(){
                 stay()
         };
     document.getElementById("player-total").innerText = playerTotal;
-    console.log('Player total: '+ playerTotal);
-    console.log('player aces: ' + playerAces)
 }
 
-//Stay button functions. Also activates/runs the dealers turn and following win conditions.
+//Stay button functions. Performs the dealers turn, drawing cards until the dealer busts or is over 16.
+//Also includes win conditions that displays the game result after dealer completes his turn.
 
 document.getElementById("stay").addEventListener("click", stay)
 
 function stay(){
-
     playAllowed = false;
     if (playerTotal < 22){
         while (dealerTotal < 17){
@@ -155,7 +153,7 @@ function stay(){
         conclusion = "Dealer Busted!";
     }
     else if (playerTotal == dealerTotal) {
-        conclusion = "Push";
+        conclusion = "Push...";
     }
     else if (playerTotal > dealerTotal) {
         conclusion = "Player Wins!";
@@ -163,24 +161,7 @@ function stay(){
     else if (playerTotal < dealerTotal) {
         conclusion = "Player Loses!"
     }
-    document.getElementById("winOrLose").innerText = conclusion;
 
-//more console logs for testing...
-    console.log('Player total: ' + playerTotal)
-    console.log('Dealer total: ' + dealerTotal)
+    document.getElementById("winOrLose").innerText = conclusion;
 }
 
-//Console logs for testing
-
-console.log('Dealer total: ' + dealerTotal)
-console.log('Player total: ' + playerTotal)
-console.log(masterDeck)
-
-
-//need to figure out Aces
-//need to set up my UI/CSS
-
-//display the player total and the dealer total live 
-//need to boot up next round after player stays and winner is declared. could be with a button or something automated
-//flip the hidden card at the right times
-//DRY out the code. Made just a dealToPlayer and dealToDealer function to fire so I'm not repeating the .pops and total updates all over the place.
