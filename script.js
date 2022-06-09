@@ -1,7 +1,8 @@
 let playerTotal = 0;    
 let dealerTotal = 0;
 let playAllowed = true;
-
+let playerAces = 0;
+let dealerAces = 0;
 //This builds the deck.
 
 const suits = ['s', 'c', 'd', 'h'];
@@ -47,28 +48,42 @@ function dealCards(){
             playerTotal += playerCard.value;
             cardEl.src = "card-deck-css/images/" + playerCard.card + ".svg";
             document.getElementById("player").append(cardEl);
-            if (playerTotal > 0){
-                console.log("if statement works")
-            }
+            if (playerCard.value === 11){
+                playerAces += 1
+            };
 
             let dealerCardEl = document.createElement("img");
             faceDown = masterDeck.pop();
             dealerTotal += faceDown.value;
             dealerCardEl.src = "card-deck-css/images/" + faceDown.card + ".svg";
             document.getElementById("dealer").append(dealerCardEl);
+            if (faceDown.value === 11){
+                dealerAces += 1
+            };
 
             let cardElTwo = document.createElement("img");
             playerCardTwo = masterDeck.pop()
             playerTotal += playerCardTwo.value;
             cardElTwo.src = "card-deck-css/images/" + playerCardTwo.card + ".svg";
             document.getElementById("player").append(cardElTwo);
+            if (playerCardTwo.value === 11){
+                playerAces += 1
+            };
             
             let dealerCardElTwo = document.createElement("img");
             dealerCardTwo = masterDeck.pop();
             dealerTotal += dealerCardTwo.value;
             dealerCardElTwo.src = "card-deck-css/images/" + dealerCardTwo.card + ".svg";
             document.getElementById("dealer").append(dealerCardElTwo);
+            if (dealerCardTwo.value === 11){
+                dealerAces += 1
+            };
 
+            document.getElementById("dealer-total").innerText = dealerTotal;
+            document.getElementById("player-total").innerText = playerTotal;
+
+            console.log('player aces: ' + playerAces)
+            console.log('dealer aces: ' + dealerAces)
             console.log('player total: ' + playerTotal)
             console.log('dealer total: ' + dealerTotal)
         }
@@ -88,12 +103,21 @@ function hit(){
             playerTotal += playerCardThree.value;
             playerHitCard.src = "card-deck-css/images/" + playerCardThree.card + ".svg";
             document.getElementById("player").append(playerHitCard)
+            if (playerCardThree.value === 11){
+                playerAces += 1;
+            };
         } 
-        if (playerTotal > 20){
-            stay()
-        }
+        if (playerTotal > 21 && playerAces > 0){
+                playerTotal -= 10;
+                playerAces -= 1
+        };
 
+        if (playerTotal > 20){
+                stay()
+        };
+    document.getElementById("player-total").innerText = playerTotal;
     console.log('Player total: '+ playerTotal);
+    console.log('player aces: ' + playerAces)
 }
 
 //Stay button functions. Also activates/runs the dealers turn and following win conditions.
@@ -105,14 +129,23 @@ function stay(){
     playAllowed = false;
     if (playerTotal < 22){
         while (dealerTotal < 17){
-        let dealerCardLoop = document.createElement("img");
-        let nextDealerCard = masterDeck.pop();
-        dealerTotal += nextDealerCard.value;
-        dealerCardLoop.src =  "card-deck-css/images/" + dealerCardTwo.card + ".svg";
-        document.getElementById("dealer").append(dealerCardLoop);
+            let dealerCardLoop = document.createElement("img");
+            let nextDealerCard = masterDeck.pop();
+            dealerTotal += nextDealerCard.value;
+            dealerCardLoop.src =  "card-deck-css/images/" + nextDealerCard.card + ".svg";
+            document.getElementById("dealer").append(dealerCardLoop);
+            if (nextDealerCard.value === 11){
+                dealerAces += 1;
+                console.log('dealer aces from loop: ' + dealerAces)
+            }
+            if (dealerTotal > 21 && dealerAces > 0){
+                    dealerTotal -= 10;
+                    dealerAces -= 1
+            };
         }
-}
+    }
 
+    document.getElementById("dealer-total").innerText = dealerTotal;
     let conclusion = ""
     
     if (playerTotal > 21){
