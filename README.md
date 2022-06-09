@@ -8,7 +8,7 @@ This game uses HTML, CSS, and Javascript.
 
 ## Getting Started
 
-1. Load the game
+1. Load the game https://throughendurance.github.io/Kiefers-Blackjack-Table/
 2. Click the "Deal Button" to start the game. This will deal the player and dealer two cards.
 3. Player can then "hit" to get another card, or "stay" to pass the turn over to the dealer.
 4. After the stay button is clicked the dealer gets cards until they are over 16.
