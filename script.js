@@ -1,6 +1,7 @@
 let playerTotal = 0;    
 let dealerTotal = 0;
-let canHit = true;
+let playAllowed = true;
+
 //This builds the deck.
 
 const suits = ['s', 'c', 'd', 'h'];
@@ -41,22 +42,32 @@ function dealCards(){
         
         if (playerTotal < "1"){
 
-
             let cardEl = document.createElement("img");
             playerCard = masterDeck.pop();
             playerTotal += playerCard.value;
             cardEl.src = "card-deck-css/images/" + playerCard.card + ".svg";
             document.getElementById("player").append(cardEl);
+            if (playerTotal > 0){
+                console.log("if statement works")
+            }
 
-
+            let dealerCardEl = document.createElement("img");
             faceDown = masterDeck.pop();
             dealerTotal += faceDown.value;
-        
-            playerCard = masterDeck.pop()
-            playerTotal += playerCard.value;
+            dealerCardEl.src = "card-deck-css/images/" + faceDown.card + ".svg";
+            document.getElementById("dealer").append(dealerCardEl);
 
-            nextDealerCard = masterDeck.pop();
-            dealerTotal += nextDealerCard.value;
+            let cardElTwo = document.createElement("img");
+            playerCardTwo = masterDeck.pop()
+            playerTotal += playerCardTwo.value;
+            cardElTwo.src = "card-deck-css/images/" + playerCardTwo.card + ".svg";
+            document.getElementById("player").append(cardElTwo);
+            
+            let dealerCardElTwo = document.createElement("img");
+            dealerCardTwo = masterDeck.pop();
+            dealerTotal += dealerCardTwo.value;
+            dealerCardElTwo.src = "card-deck-css/images/" + dealerCardTwo.card + ".svg";
+            document.getElementById("dealer").append(dealerCardElTwo);
 
             console.log('player total: ' + playerTotal)
             console.log('dealer total: ' + dealerTotal)
@@ -68,14 +79,20 @@ function dealCards(){
 document.getElementById("hit").addEventListener("click", hit)
 
 function hit(){
-    if (!canHit){
+    if (!playAllowed){
         return;
     }
         if (playerTotal < 21){
-            playerCard = masterDeck.pop();
-            playerTotal += playerCard.value;
-            
+            let playerHitCard = document.createElement("img");
+            playerCardThree = masterDeck.pop();
+            playerTotal += playerCardThree.value;
+            playerHitCard.src = "card-deck-css/images/" + playerCardThree.card + ".svg";
+            document.getElementById("player").append(playerHitCard)
         } 
+        if (playerTotal > 20){
+            stay()
+        }
+
     console.log('Player total: '+ playerTotal);
 }
 
@@ -85,11 +102,14 @@ document.getElementById("stay").addEventListener("click", stay)
 
 function stay(){
 
-    canHit = false;
+    playAllowed = false;
     if (playerTotal < 22){
         while (dealerTotal < 17){
+        let dealerCardLoop = document.createElement("img");
         let nextDealerCard = masterDeck.pop();
         dealerTotal += nextDealerCard.value;
+        dealerCardLoop.src =  "card-deck-css/images/" + dealerCardTwo.card + ".svg";
+        document.getElementById("dealer").append(dealerCardLoop);
         }
 }
 
@@ -124,14 +144,8 @@ console.log('Player total: ' + playerTotal)
 console.log(masterDeck)
 
 
-//working notes: need to prevent player from hitting after clicking stay - maybe remove button? nothing seems to work move past this and come back later
-
-//need to run the shuffle function at somepoint. when the game is loaded or upon clicking a "new game" button.
-
-
-//longer term: need to set up my UI/CSS
-//need to have cards visually displayed. Right now everything is run in the background.
-
+//need to figure out Aces
+//need to set up my UI/CSS
 
 //display the player total and the dealer total live 
 //need to boot up next round after player stays and winner is declared. could be with a button or something automated
